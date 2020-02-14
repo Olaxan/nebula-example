@@ -64,9 +64,7 @@ ExampleApplication::ExampleApplication() :
 /**
 */
 ExampleApplication::~ExampleApplication()
-{
-    // empty
-}
+	= default;
 
 //------------------------------------------------------------------------------
 /**
@@ -89,7 +87,7 @@ ExampleApplication::Open()
 
 		this->resMgr = Resources::ResourceManager::Create();
 		this->resMgr->Open();
-
+    	
 		Util::String root = IO::FSWrapper::GetHomeDirectory();
 
 #if PUBLIC_BUILD
@@ -253,6 +251,9 @@ ExampleApplication::Run()
 
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
+
+    Entities::GameEntityId gameEntity = Entities::CreateEntity();
+	
     
     Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
     // Register entity to various graphics contexts.
@@ -261,7 +262,7 @@ ExampleApplication::Run()
     // Registering an entity to the ObservableContext will allow cameras to observe the entity (adds the entity to visibility culling system)
     Graphics::RegisterEntity<ModelContext, ObservableContext>(exampleEntity);
     // Setup the entitys model instance
-    ModelContext::Setup(exampleEntity, "mdl:system/placeholder.n3", "Examples");
+    ModelContext::Setup(exampleEntity, "mdl:environment/Groundplane.n3", "Examples");
     // Set the transform of the entity
     ModelContext::SetTransform(exampleEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
     // Setup the observable as a model
@@ -296,6 +297,12 @@ ExampleApplication::Run()
 
         this->inputServer->BeginFrame();
         this->inputServer->OnFrame();
+
+        Math::point point = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5, 0, Math::n_cos(this->frameIndex / 100.0f) * 5);
+        Math::matrix44 trans = Math::matrix44::translation(point);
+        //Math::matrix44 rot = Math::matrix44::lookatlh(point, Math::point(0, 0, 0), Math::vector::upvec());
+        Math::matrix44 rot = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
+        ModelContext::SetTransform(animatedEntity, rot * trans);
 
         this->resMgr->Update(this->frameIndex);
 

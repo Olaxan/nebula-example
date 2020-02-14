@@ -22,6 +22,7 @@
 #include "http/httpclientregistry.h"
 #include "core/coreserver.h"
 #include "io/iointerface.h"
+#include "entitymanager.h"
 
 namespace Example
 {

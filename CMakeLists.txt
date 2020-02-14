@@ -6,19 +6,25 @@ cmake_minimum_required(VERSION 3.7.2)
 get_filename_component(FIPS_ROOT_DIR "../fips" ABSOLUTE)
 include(${FIPS_ROOT_DIR}/cmake/fips.cmake)
 
-fips_setup(PROJECT nebula-example-project)
+fips_setup(PROJECT nebula-sandbox)
 fips_include_directories(.)
 
-nebula_begin_app(nebula-example windowed)
+nebula_begin_app(nebula-sandbox windowed)
     
     fips_dir(code)
         fips_files(
             main.cc
+			exampleapp.h
             exampleapp.cc
-            exampleapp.h
+			entitymanager.h
+			entitymanager.cc
+			gameentity.h
+			componentbase.h
+			componentmanager.h
+			componentmanager.cc
         )
 
-    fips_deps(foundation render resource dynui scripting)
+    fips_deps(application foundation render resource dynui scripting)
 nebula_end_app()
 
 fips_finish()
