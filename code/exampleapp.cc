@@ -31,8 +31,7 @@
 #include "io/debug/iopagehandler.h"
 #include "io/fswrapper.h"
 #include "system/nebulasettings.h"
-#include "componentbase.h"
-#include "transformcomponent.h"
+
 #ifdef __WIN32__
 #include <shellapi.h>
 #elif __LINUX__
@@ -252,8 +251,9 @@ ExampleApplication::Run()
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
 
-    Entities::GameEntityId gameEntity = Entities::CreateEntity();
-	
+    /*Entities::GameEntityId player = Entities::CreateEntity();
+    Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(player);
+    Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(player);*/
     
     Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
     // Register entity to various graphics contexts.
@@ -286,10 +286,6 @@ ExampleApplication::Run()
     // You can also register to contexts directly
     Lighting::LightContext::RegisterEntity(pointLight);
     Lighting::LightContext::SetupPointLight(pointLight, Math::float4(4.5, 0.5, 0.2, 1), 10.0f, Math::matrix44::translation(1, 2, 1), 100.0f, true);
-
-    Entities::GameEntityId boop;
-    Components::Register<Components::TransformComponent>(boop);
-
 	
     while (run && !inputServer->IsQuitRequested())
     {   

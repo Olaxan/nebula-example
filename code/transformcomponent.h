@@ -1,6 +1,7 @@
 #pragma once
 
 #include "componentbase.h"
+#include "componentmanager.h"
 #include "core/refcounted.h"
 #include "core/singleton.h"
 
@@ -17,7 +18,10 @@ namespace Components
 		};
 
 	public:
-		TransformComponent() = default;
+		TransformComponent()
+		{
+			RegisterComponent(this);
+		};
 
 	private:
 		TransformData _data;

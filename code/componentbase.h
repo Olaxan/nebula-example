@@ -9,7 +9,7 @@ namespace Components
 
 	class ComponentBase : public Core::RefCounted
 	{
-		__DeclareClass(ComponentBase)
+		__DeclareAbstractClass(ComponentBase)
 
 	public:
 		ComponentBase() = default;
@@ -20,12 +20,12 @@ namespace Components
 		
 		bool HasComponent(Entities::GameEntityId e) const;
 		InstanceId GetComponent(Entities::GameEntityId e) const;
-
-		virtual void OnActivate(InstanceId instance);
-		virtual void OnDeactivate(InstanceId instance);
-		virtual void OnBeginFrame();
-		virtual void OnRender();
-		virtual void OnEndFrame();
+		
+		virtual void OnActivate(InstanceId instance)	{};
+		virtual void OnDeactivate(InstanceId instance)	{};
+		virtual void OnBeginFrame()						{};
+		virtual void OnRender()							{};
+		virtual void OnEndFrame()						{};
 
 	private:
 		Util::HashTable<Entities::GameEntityId, InstanceId> _entities;

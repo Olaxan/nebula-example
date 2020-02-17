@@ -1,0 +1,1 @@
+ERROR: No projectinfo.xml file found in current project!
