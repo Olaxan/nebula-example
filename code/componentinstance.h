@@ -4,5 +4,5 @@
 
 namespace Components
 {
-	ID_32_TYPE(ComponentInstanceId)
+	ID_32_TYPE(ComponentInstance)
 }

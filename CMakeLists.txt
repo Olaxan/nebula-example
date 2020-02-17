@@ -20,8 +20,13 @@ nebula_begin_app(nebula-sandbox windowed)
 			entitymanager.cc
 			gameentity.h
 			componentbase.h
+			componentbase.cc
 			componentmanager.h
 			componentmanager.cc
+			graphicscomponent.h
+			graphicscomponent.cc
+			transformcomponent.h
+			transformcomponent.cc
         )
 
     fips_deps(application foundation render resource dynui scripting)
