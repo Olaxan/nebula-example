@@ -21,7 +21,7 @@ namespace Components
 	{
 		for (auto comp : _components)
 		{
-			InstanceId idx = comp->GetComponent(e);
+			const InstanceId idx = comp->GetComponent(e);
 			comp->OnMessage(idx, msg);
 		}
 	}

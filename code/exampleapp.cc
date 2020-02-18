@@ -263,7 +263,6 @@ ExampleApplication::Run()
     Entities::GameEntityId player = Entities::CreateEntity();
     Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(player);
     Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(player);
-	
     
     Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
     // Register entity to various graphics contexts.

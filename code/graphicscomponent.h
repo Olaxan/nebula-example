@@ -21,8 +21,10 @@ namespace Components
 		GraphicsComponent() { __ConstructSingleton; }
 		~GraphicsComponent() { __DestructSingleton; }
 
+		void OnActivate(InstanceId instance) override;
+
 		Util::String GetResourceUri(const InstanceId idx) { return _data.uri[idx]; }
-		void SetResourceUri(const InstanceId idx, const Util::String uri) { _data.uri[idx] = uri; }
+		void SetResourceUri(const InstanceId idx, const Util::String& uri) { _data.uri[idx] = uri; }
 
 	private:
 		GraphicsData _data;
