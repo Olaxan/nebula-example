@@ -18,10 +18,8 @@ namespace Components
 		};
 
 	public:
-		GraphicsComponent()
-		{
-			RegisterComponent(this);
-		};
+		GraphicsComponent() { __ConstructSingleton; }
+		~GraphicsComponent() { __DestructSingleton; }
 
 	private:
 		GraphicsData _data;

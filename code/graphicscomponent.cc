@@ -5,5 +5,4 @@ namespace Components
 {
 	__ImplementClass(GraphicsComponent, 'GFXC', ComponentBase)
 	__ImplementSingleton(GraphicsComponent)
-
 }

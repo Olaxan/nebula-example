@@ -5,13 +5,12 @@
 #include "core/singleton.h"
 #include "ids/idgenerationpool.h"
 #include "ids/id.h"
-#include "game/manager.h"
 #include "util/delegate.h"
 #include "gameentity.h"
 
 namespace Entities
 {
-	class GameEntityManager : public Game::Manager
+	class GameEntityManager : public Core::RefCounted
 	{
 		__DeclareClass(GameEntityManager);
 		__DeclareSingleton(GameEntityManager);

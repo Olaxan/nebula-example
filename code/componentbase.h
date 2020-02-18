@@ -10,6 +10,7 @@ namespace Components
 	class ComponentBase : public Core::RefCounted
 	{
 		__DeclareAbstractClass(ComponentBase)
+		__DeclareInterfaceSingleton(ComponentBase)
 
 	public:
 		ComponentBase() = default;
@@ -34,7 +35,7 @@ namespace Components
 
 	template<typename COMPONENT>
 	InstanceId Register(Entities::GameEntityId e)
-	{
+	{  
 		return COMPONENT::Instance()->RegisterEntity(e);
 	}
 	

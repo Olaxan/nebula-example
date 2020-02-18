@@ -3,7 +3,8 @@
 namespace Components
 {
 
-	__ImplementAbstractClass(ComponentBase, 'COMP', Core::RefCounted)
+	__ImplementAbstractClass(Components::ComponentBase, 'COMP', Core::RefCounted)
+	__ImplementInterfaceSingleton(ComponentBase)
 	
 	InstanceId ComponentBase::RegisterEntity(const Entities::GameEntityId e)
 	{

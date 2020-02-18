@@ -23,6 +23,7 @@
 #include "core/coreserver.h"
 #include "io/iointerface.h"
 #include "entitymanager.h"
+#include "componentmanager.h"
 
 namespace Example
 {
@@ -52,6 +53,8 @@ protected:
 	Ptr<Core::CoreServer> coreServer;
     Ptr<Graphics::GraphicsServer> gfxServer;
     Ptr<Resources::ResourceManager> resMgr;
+    Ptr<Entities::GameEntityManager> entMgr;
+    Ptr<Components::ComponentManager> cmpMgr;
     Ptr<Input::InputServer> inputServer;
     Ptr<IO::IoServer> ioServer;
 	Ptr<IO::IoInterface> ioInterface;

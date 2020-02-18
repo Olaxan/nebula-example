@@ -18,10 +18,8 @@ namespace Components
 		};
 
 	public:
-		TransformComponent()
-		{
-			RegisterComponent(this);
-		};
+		TransformComponent() { __ConstructSingleton; }
+		~TransformComponent() { __DestructSingleton; }
 
 	private:
 		TransformData _data;

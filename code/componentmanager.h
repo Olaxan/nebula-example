@@ -5,34 +5,34 @@
 
 namespace Components
 {
-	class ComponentManager : public Game::Manager
+	class ComponentManager : public Core::RefCounted
 	{
 		__DeclareClass(ComponentManager)
 		__DeclareSingleton(ComponentManager)
 
 	public:
 
-		ComponentManager() = default;
-		~ComponentManager() = default;
+		ComponentManager() { __ConstructSingleton }
+		~ComponentManager() { __DestructSingleton }
 		
 		void RegisterComponent(ComponentBase* comp);
 		void DeregisterComponent(ComponentBase* comp);
 		
-		void OnBeginFrame() override
+		void OnBeginFrame()
 		{
 			for (auto comp : components)
 			{
 				comp->OnBeginFrame();
 			}
 		}
-		void OnFrame() override
+		void OnFrame()
 		{
 			for (auto comp : components)
 			{
 				comp->OnRender();
 			}
 		}
-		void OnEndFrame() override
+		void OnEndFrame()
 		{
 			for (auto comp : components)
 			{
@@ -44,9 +44,12 @@ namespace Components
 		Util::Array<ComponentBase*> components;
 	};
 
-	inline void RegisterComponent(ComponentBase* comp)
+	template<typename COMPONENT>
+	void RegisterComponent()
 	{
-		ComponentManager::Instance()->RegisterComponent(comp);
+		if (!COMPONENT::HasInstance()) { COMPONENT::Create(); }
+		
+		ComponentManager::Instance()->RegisterComponent(COMPONENT::Instance());
 	}
 
 	inline void DeregisterComponent(ComponentBase* comp)

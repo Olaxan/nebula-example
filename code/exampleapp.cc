@@ -31,6 +31,10 @@
 #include "io/debug/iopagehandler.h"
 #include "io/fswrapper.h"
 #include "system/nebulasettings.h"
+#include "componentmanager.h"
+#include "componentbase.h"
+#include "transformcomponent.h"
+#include "graphicscomponent.h"
 
 #ifdef __WIN32__
 #include <shellapi.h>
@@ -86,6 +90,11 @@ ExampleApplication::Open()
 
 		this->resMgr = Resources::ResourceManager::Create();
 		this->resMgr->Open();
+
+        this->entMgr = Entities::GameEntityManager::Create();
+        this->cmpMgr = Components::ComponentManager::Create();
+        Components::RegisterComponent<Components::TransformComponent>();
+        Components::RegisterComponent<Components::GraphicsComponent>();
     	
 		Util::String root = IO::FSWrapper::GetHomeDirectory();
 
@@ -251,9 +260,9 @@ ExampleApplication::Run()
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
 
-    /*Entities::GameEntityId player = Entities::CreateEntity();
+    Entities::GameEntityId player = Entities::CreateEntity();
     Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(player);
-    Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(player);*/
+    Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(player);
     
     Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
     // Register entity to various graphics contexts.

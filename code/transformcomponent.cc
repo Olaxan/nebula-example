@@ -5,6 +5,4 @@ namespace Components
 {
 	__ImplementClass(TransformComponent, 'TRFM', ComponentBase)
 	__ImplementSingleton(TransformComponent)
-
-	
 }

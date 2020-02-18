@@ -8,7 +8,7 @@
 namespace Entities
 {
 
-	__ImplementClass(Entities::GameEntityManager, 'EMGR', Game::Manager);
+	__ImplementClass(Entities::GameEntityManager, 'EMGR', Core::RefCounted);
 	__ImplementSingleton(Entities::GameEntityManager);
 	
 	//------------------------------------------------------------------------------

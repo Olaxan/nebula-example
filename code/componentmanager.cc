@@ -2,9 +2,11 @@
 
 namespace Components
 {
-	__ImplementClass(ComponentManager, 'CMGR', Game::Manager)
+	__ImplementClass(ComponentManager, 'CMGR', Core::RefCounted)
 	__ImplementSingleton(ComponentManager)
 
+	
+	
 	void ComponentManager::RegisterComponent(ComponentBase* comp)
 	{
 		components.Append(comp);
