@@ -45,6 +45,4 @@ namespace Entities
 		pool.Deallocate(e.id);
 		count--;
 	}
-
-
 }

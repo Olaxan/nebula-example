@@ -14,13 +14,16 @@ namespace Components
 
 		struct TransformData
 		{
-			Math::matrix44 transform;
+			Util::Array<Math::matrix44> transforms;
 		};
 
 	public:
 		TransformComponent() { __ConstructSingleton; }
 		~TransformComponent() { __DestructSingleton; }
 
+		Math::matrix44 GetWorldTransform(InstanceId idx) { return _data.transforms[idx]; }
+		void SetWorldTransform(InstanceId idx, Math::matrix44 transform) { _data.transforms[idx] = transform; }
+		
 	private:
 		TransformData _data;
 	};

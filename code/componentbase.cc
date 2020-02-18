@@ -8,15 +8,23 @@ namespace Components
 	
 	InstanceId ComponentBase::RegisterEntity(const Entities::GameEntityId e)
 	{
-		const unsigned idx = _entities.Size() + 1;
+		if (this->HasComponent(e))
+			return this->GetComponent(e);
+		
+		const InstanceId idx = _entities.Size();
 		_entities.Add(e, idx);
+		this->OnActivate(idx);
 		return idx;
 	}
 
 	void ComponentBase::DeregisterEntity(const Entities::GameEntityId e)
 	{
 		if (HasComponent(e))
+		{
+			const InstanceId idx = this->GetComponent(e);
+			this->OnDeactivate(idx);
 			_entities.Erase(e);
+		}
 	}
 
 	bool ComponentBase::HasComponent(const Entities::GameEntityId e) const

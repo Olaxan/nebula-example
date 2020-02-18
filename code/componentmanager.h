@@ -1,7 +1,7 @@
 #pragma once
 
-#include "game/manager.h"
 #include "componentbase.h"
+#include "gameentity.h"
 
 namespace Components
 {
@@ -17,31 +17,32 @@ namespace Components
 		
 		void RegisterComponent(ComponentBase* comp);
 		void DeregisterComponent(ComponentBase* comp);
+		void Message(Entities::GameEntityId e, int msg);
 		
 		void OnBeginFrame()
 		{
-			for (auto comp : components)
+			for (auto comp : _components)
 			{
 				comp->OnBeginFrame();
 			}
 		}
 		void OnFrame()
 		{
-			for (auto comp : components)
+			for (auto comp : _components)
 			{
 				comp->OnRender();
 			}
 		}
 		void OnEndFrame()
 		{
-			for (auto comp : components)
+			for (auto comp : _components)
 			{
 				comp->OnEndFrame();
 			}
 		}
 
 	private:
-		Util::Array<ComponentBase*> components;
+		Util::ArrayStack<ComponentBase*, 128> _components;
 	};
 
 	template<typename COMPONENT>
@@ -55,6 +56,11 @@ namespace Components
 	inline void DeregisterComponent(ComponentBase* comp)
 	{
 		ComponentManager::Instance()->DeregisterComponent(comp);
+	}
+
+	inline void Message(Entities::GameEntityId e, int temp_msg)
+	{
+		ComponentManager::Instance()->Message(e, temp_msg);
 	}
 	
 }

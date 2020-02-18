@@ -263,6 +263,7 @@ ExampleApplication::Run()
     Entities::GameEntityId player = Entities::CreateEntity();
     Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(player);
     Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(player);
+	
     
     Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
     // Register entity to various graphics contexts.
@@ -305,6 +306,7 @@ ExampleApplication::Run()
 		this->coreServer->Trigger();
 
         this->inputServer->BeginFrame();
+    	
         this->inputServer->OnFrame();
 
         Math::point point = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5, 0, Math::n_cos(this->frameIndex / 100.0f) * 5);
@@ -316,7 +318,10 @@ ExampleApplication::Run()
         this->resMgr->Update(this->frameIndex);
 
 		this->gfxServer->BeginFrame();
-        
+        this->cmpMgr->OnBeginFrame();
+
+        Components::Message(player, 1);
+    	
 		// put game code which doesn't need visibility data or animation here
 
         this->gfxServer->BeforeViews();
@@ -330,12 +335,14 @@ ExampleApplication::Run()
         
         // put game code which need visibility data here
         this->gfxServer->RenderViews();
+        this->cmpMgr->OnFrame();
 
         // put game code which needs rendering to be done (animation etc) here
         this->gfxServer->EndViews();
 
         // do stuff after rendering is done
         this->gfxServer->EndFrame();
+        this->cmpMgr->OnEndFrame();
 
         // force wait immediately
         WindowPresent(wnd, frameIndex);

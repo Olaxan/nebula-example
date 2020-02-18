@@ -16,10 +16,13 @@ namespace Components
 		{
 			Util::Array<Util::String> uri;
 		};
-
+		
 	public:
 		GraphicsComponent() { __ConstructSingleton; }
 		~GraphicsComponent() { __DestructSingleton; }
+
+		Util::String GetResourceUri(const InstanceId idx) { return _data.uri[idx]; }
+		void SetResourceUri(const InstanceId idx, const Util::String uri) { _data.uri[idx] = uri; }
 
 	private:
 		GraphicsData _data;
