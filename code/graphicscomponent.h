@@ -11,19 +11,12 @@ namespace Components
 	{
 		__DeclareClass(GraphicsComponent)
 		__DeclareSingleton(GraphicsComponent)
-
-		struct GraphicsData
-		{
-			Util::ArrayStack<Util::String, 128> uri;
-			Util::ArrayStack<Util::StringAtom, 128> tag;
-			Util::ArrayStack<InstanceId, 128> transform_id;
-			Util::ArrayStack<Visibility::VisibilityEntityType, 128> visibility_type;
-			Util::ArrayStack<Graphics::GraphicsEntityId, 128> gfx_id;
-		};
 		
 	public:
 		GraphicsComponent() { __ConstructSingleton; }
 		~GraphicsComponent() { __DestructSingleton; }
+
+		void InitializeDefault() override;
 
 		Graphics::GraphicsEntityId Setup(InstanceId instance);
 		
@@ -41,7 +34,14 @@ namespace Components
 		[[nodiscard]] Graphics::GraphicsEntityId GetRenderId(const InstanceId idx) const { return _data.gfx_id[idx]; }
 
 	private:
-		GraphicsData _data;
+		struct GraphicsData
+		{
+			Util::ArrayStack<Util::String, 128> uri;
+			Util::ArrayStack<Util::StringAtom, 128> tag;
+			Util::ArrayStack<InstanceId, 128> transform_id;
+			Util::ArrayStack<Graphics::GraphicsEntityId, 128> gfx_id;
+			Util::ArrayStack<Visibility::VisibilityEntityType, 128> visibility_type;
+		} _data;
 	};
 
 	inline GraphicsComponent* Graphics()

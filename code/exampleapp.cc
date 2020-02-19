@@ -35,6 +35,7 @@
 #include "componentbase.h"
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
+#include "charactercomponent.h"
 
 #ifdef __WIN32__
 #include <shellapi.h>
@@ -95,6 +96,7 @@ ExampleApplication::Open()
         this->cmpMgr = Components::ComponentManager::Create();
         Components::RegisterComponent<Components::TransformComponent>();
         Components::RegisterComponent<Components::GraphicsComponent>();
+        Components::RegisterComponent<Components::CharacterComponent>();
     	
 		Util::String root = IO::FSWrapper::GetHomeDirectory();
 
@@ -260,28 +262,35 @@ ExampleApplication::Run()
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
 
-    Entities::GameEntityId player = Entities::CreateEntity();
-    Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(player);
-    Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(player);
+    const Entities::GameEntityId playerEntity = Entities::CreateEntity();
+    const Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(playerEntity);
+    const Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(playerEntity);
 	
     Components::Transforms()->SetWorldTransform(playerTransform, Math::matrix44::translation(Math::point(0, 0, 0)));
-    Components::Graphics()->SetResourceUri(playerGraphics, "mdl:environment/Groundplane.n3");
+
+	Components::Graphics()->SetResourceUri(playerGraphics, "mdl:environment/Groundplane.n3");
     Components::Graphics()->SetTag(playerGraphics, "Examples");
     Components::Graphics()->SetVisibilityType(playerGraphics, Model);
     Components::Graphics()->Setup(playerGraphics);
 
-    // Example animated entity
-    Graphics::GraphicsEntityId animatedEntity = Graphics::CreateEntity();
-    // The CharacterContext holds skinned, animated entites and takes care of playing animations etc.
-    Graphics::RegisterEntity<ModelContext, ObservableContext, Characters::CharacterContext>(animatedEntity);
-    // create model and move it to the front
-    ModelContext::Setup(animatedEntity, "mdl:Units/Unit_Footman.n3", "Examples");
-    ModelContext::SetTransform(animatedEntity, Math::matrix44::translation(Math::point(5, 0, 0)));
-    ObservableContext::Setup(animatedEntity, VisibilityEntityType::Model);
-    // Setup the character context instance.
-    // nsk3 is the skeleton resource, nax3 is the animation resource. nax3 files can contain multiple animation clips
-    Characters::CharacterContext::Setup(animatedEntity, "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples");
-    Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+    const Entities::GameEntityId movingEntity = Entities::CreateEntity();
+    const Components::InstanceId movingTransform = Components::Register<Components::TransformComponent>(movingEntity);
+    const Components::InstanceId movingGraphics = Components::Register<Components::GraphicsComponent>(movingEntity);
+    const Components::InstanceId movingCharacter = Components::Register <Components::CharacterComponent>(movingEntity);
+
+    Components::Transforms()->SetWorldTransform(movingTransform, Math::matrix44::translation(Math::point(5, 0, 0)));
+
+	Components::Graphics()->SetResourceUri(movingGraphics, "mdl:Units/Unit_Footman.n3");
+    Components::Graphics()->SetTag(movingGraphics, "Examples");
+    Components::Graphics()->SetVisibilityType(movingGraphics, Model);
+    auto animId = Components::Graphics()->Setup(movingGraphics);
+
+    Components::Characters()->SetSkeletonUri(movingCharacter, "ske:Units/Unit_Footman.nsk3");
+    Components::Characters()->SetAnimationUri(movingCharacter, "ani:Units/Unit_Footman.nax3");
+    Components::Characters()->SetTag(movingCharacter, "Examples");
+    Components::Characters()->Setup(movingCharacter);
+	
+    Characters::CharacterContext::PlayClip(animId, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
 
     // Create a point light entity
     Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
@@ -305,14 +314,14 @@ ExampleApplication::Run()
         Math::matrix44 trans = Math::matrix44::translation(point);
         //Math::matrix44 rot = Math::matrix44::lookatlh(point, Math::point(0, 0, 0), Math::vector::upvec());
         Math::matrix44 rot = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
-        ModelContext::SetTransform(animatedEntity, rot * trans);
+        //ModelContext::SetTransform(animatedEntity, rot * trans);
 
         this->resMgr->Update(this->frameIndex);
 
 		this->gfxServer->BeginFrame();
         this->cmpMgr->OnBeginFrame();
 
-        Components::Message(player, 1);
+        //Components::Message(playerEntity, 1);
     	
 		// put game code which doesn't need visibility data or animation here
 

@@ -10,10 +10,13 @@ namespace Components
 	{
 		if (this->HasComponent(e))
 			return this->GetComponent(e);
+
+		InitializeDefault();
 		
 		const InstanceId idx = _entities.Size();
 		_entities.Add(e, idx);
 		_owners.Add(idx, e);
+		_count++;
 		this->OnActivate(idx);
 		return idx;
 	}
@@ -25,6 +28,7 @@ namespace Components
 			const InstanceId idx = this->GetComponent(e);
 			this->OnDeactivate(idx);
 			_entities.Erase(e);
+			_count--;
 		}
 	}
 

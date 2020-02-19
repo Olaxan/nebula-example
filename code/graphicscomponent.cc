@@ -7,6 +7,15 @@ namespace Components
 	__ImplementClass(Components::GraphicsComponent, 'GFXC', Components::ComponentBase)
 	__ImplementSingleton(Components::GraphicsComponent)
 
+	void GraphicsComponent::InitializeDefault()
+	{
+		_data.uri.Append(Util::String(""));
+		_data.tag.Append(Util::StringAtom("Empty"));
+		_data.transform_id.Append(0);
+		_data.gfx_id.Append(0);
+		_data.visibility_type.Append(Visibility::VisibilityEntityType::Model);
+	}
+
 	Graphics::GraphicsEntityId GraphicsComponent::Setup(InstanceId instance)
 	{
 		auto entity = Graphics::CreateEntity();

@@ -22,6 +22,9 @@ namespace Components
 		[[nodiscard]] bool HasComponent(Entities::GameEntityId e) const;
 		[[nodiscard]] InstanceId GetComponent(Entities::GameEntityId e) const;
 		[[nodiscard]] Entities::GameEntityId GetOwner(InstanceId idx) const;
+		[[nodiscard]] SizeT Count() const { return _count; }
+
+		virtual void InitializeDefault() {}
 		
 		virtual void OnActivate(InstanceId instance)			{}
 		virtual void OnDeactivate(InstanceId instance)			{}
@@ -33,6 +36,7 @@ namespace Components
 	private:
 		Util::HashTable<Entities::GameEntityId, InstanceId> _entities;
 		Util::HashTable<InstanceId, Entities::GameEntityId> _owners;
+		SizeT _count;
 	};
 
 	template<typename COMPONENT>

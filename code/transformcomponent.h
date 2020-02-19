@@ -21,6 +21,8 @@ namespace Components
 		TransformComponent() { __ConstructSingleton; }
 		~TransformComponent() { __DestructSingleton; }
 
+		void InitializeDefault() override;
+
 		[[nodiscard]] Math::matrix44 GetWorldTransform(InstanceId idx) const { return _data.transforms[idx]; }
 		void SetWorldTransform(InstanceId idx, Math::matrix44 transform) { _data.transforms[idx] = transform; }
 		

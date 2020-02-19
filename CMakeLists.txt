@@ -27,6 +27,8 @@ nebula_begin_app(nebula-sandbox windowed)
 			graphicscomponent.cc
 			transformcomponent.h
 			transformcomponent.cc
+			charactercomponent.h
+			charactercomponent.cc
         )
 
     fips_deps(application foundation render resource dynui scripting)
