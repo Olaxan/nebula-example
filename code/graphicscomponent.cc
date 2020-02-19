@@ -1,13 +1,30 @@
 #include "foundation/stdneb.h"
 #include "graphicscomponent.h"
+#include "transformcomponent.h"
 
 namespace Components
 {
-	__ImplementClass(GraphicsComponent, 'GFXC', ComponentBase)
-	__ImplementSingleton(GraphicsComponent)
+	__ImplementClass(Components::GraphicsComponent, 'GFXC', Components::ComponentBase)
+	__ImplementSingleton(Components::GraphicsComponent)
+
+	Graphics::GraphicsEntityId GraphicsComponent::Setup(InstanceId instance)
+	{
+		auto entity = Graphics::CreateEntity();
+		Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext>(entity);
+		Models::ModelContext::Setup(entity, GetResourceUri(instance), GetTag(instance));
+		const auto trans = Transforms()->GetWorldTransform(_data.transform_id[instance]);
+		Models::ModelContext::SetTransform(entity, trans);
+		Visibility::ObservableContext::Setup(entity, GetVisibilityType(instance));
+		_data.gfx_id[instance] = entity;
+		return entity;
+	}
 
 	void GraphicsComponent::OnActivate(InstanceId instance)
 	{
-		_data.uri.Append("");
+		const Entities::GameEntityId owner = GetOwner(instance);
+		if (Components::HasComponent<TransformComponent>(owner))
+			_data.transform_id[instance] = Components::GetComponent<TransformComponent>(owner);
+		else n_warning("OnActivate [%u]: Graphics component requires valid transform component\n", instance);
 	}
+
 }

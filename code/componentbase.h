@@ -16,11 +16,12 @@ namespace Components
 		ComponentBase() = default;
 		virtual ~ComponentBase() = default;
 		
-		InstanceId RegisterEntity(Entities::GameEntityId e);
+		[[nodiscard]] InstanceId RegisterEntity(Entities::GameEntityId e);
 		void DeregisterEntity(Entities::GameEntityId e);
-		
-		bool HasComponent(Entities::GameEntityId e) const;
-		InstanceId GetComponent(Entities::GameEntityId e) const;
+
+		[[nodiscard]] bool HasComponent(Entities::GameEntityId e) const;
+		[[nodiscard]] InstanceId GetComponent(Entities::GameEntityId e) const;
+		[[nodiscard]] Entities::GameEntityId GetOwner(InstanceId idx) const;
 		
 		virtual void OnActivate(InstanceId instance)			{}
 		virtual void OnDeactivate(InstanceId instance)			{}
@@ -31,7 +32,7 @@ namespace Components
 
 	private:
 		Util::HashTable<Entities::GameEntityId, InstanceId> _entities;
-		Util::Array<Entities::GameEntityId> _owners;
+		Util::HashTable<InstanceId, Entities::GameEntityId> _owners;
 	};
 
 	template<typename COMPONENT>

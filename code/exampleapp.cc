@@ -263,19 +263,12 @@ ExampleApplication::Run()
     Entities::GameEntityId player = Entities::CreateEntity();
     Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(player);
     Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(player);
-    
-    Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
-    // Register entity to various graphics contexts.
-    // The template parameters are which contexts that the entity should be registered to.
-    // ModelContext takes care of loading models and also handles transforms for instances of models.
-    // Registering an entity to the ObservableContext will allow cameras to observe the entity (adds the entity to visibility culling system)
-    Graphics::RegisterEntity<ModelContext, ObservableContext>(exampleEntity);
-    // Setup the entitys model instance
-    ModelContext::Setup(exampleEntity, "mdl:environment/Groundplane.n3", "Examples");
-    // Set the transform of the entity
-    ModelContext::SetTransform(exampleEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
-    // Setup the observable as a model
-    ObservableContext::Setup(exampleEntity, VisibilityEntityType::Model);
+	
+    Components::Transforms()->SetWorldTransform(playerTransform, Math::matrix44::translation(Math::point(0, 0, 0)));
+    Components::Graphics()->SetResourceUri(playerGraphics, "mdl:environment/Groundplane.n3");
+    Components::Graphics()->SetTag(playerGraphics, "Examples");
+    Components::Graphics()->SetVisibilityType(playerGraphics, Model);
+    Components::Graphics()->Setup(playerGraphics);
 
     // Example animated entity
     Graphics::GraphicsEntityId animatedEntity = Graphics::CreateEntity();

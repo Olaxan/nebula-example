@@ -13,6 +13,7 @@ namespace Components
 		
 		const InstanceId idx = _entities.Size();
 		_entities.Add(e, idx);
+		_owners.Add(idx, e);
 		this->OnActivate(idx);
 		return idx;
 	}
@@ -35,5 +36,10 @@ namespace Components
 	InstanceId ComponentBase::GetComponent(const Entities::GameEntityId e) const
 	{
 		return HasComponent(e) ? _entities[e] : 0;
+	}
+
+	Entities::GameEntityId ComponentBase::GetOwner(InstanceId idx) const
+	{
+		return _owners.Contains(idx) ? _owners[idx] : 0; //TODO: Return a better invalid-value.
 	}
 }
