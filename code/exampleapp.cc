@@ -312,11 +312,11 @@ ExampleApplication::Run()
 
         Math::point point = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5, 0, Math::n_cos(this->frameIndex / 100.0f) * 5);
         Math::matrix44 trans = Math::matrix44::translation(point);
-        //Math::matrix44 rot = Math::matrix44::lookatlh(point, Math::point(0, 0, 0), Math::vector::upvec());
         Math::matrix44 rot = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
-        //ModelContext::SetTransform(animatedEntity, rot * trans);
 
-        this->resMgr->Update(this->frameIndex);
+        Components::Transforms()->SetWorldTransform(movingTransform, rot * trans);
+
+    	this->resMgr->Update(this->frameIndex);
 
 		this->gfxServer->BeginFrame();
         this->cmpMgr->OnBeginFrame();

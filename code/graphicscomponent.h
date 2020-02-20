@@ -21,6 +21,7 @@ namespace Components
 		Graphics::GraphicsEntityId Setup(InstanceId instance);
 		
 		void OnActivate(InstanceId instance) override;
+		void OnBeginFrame() override;
 
 		[[nodiscard]] Util::String GetResourceUri(const InstanceId idx) const { return _data.uri[idx]; }
 		void SetResourceUri(const InstanceId idx, const Util::String& uri) { _data.uri[idx] = uri; }

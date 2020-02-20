@@ -36,4 +36,14 @@ namespace Components
 		else n_warning("OnActivate [%u]: Graphics component requires valid transform component\n", instance);
 	}
 
+	void GraphicsComponent::OnBeginFrame()
+	{
+		for (int i = 0; i < Count(); i++)
+		{
+			const auto gfx_id = _data.gfx_id[i];
+			const auto trf_id = _data.transform_id[i];
+			auto trans = Transforms()->GetWorldTransform(trf_id);
+			Models::ModelContext::SetTransform(gfx_id, trans);
+		}
+	}
 }
