@@ -42,7 +42,7 @@ namespace Components
 		}
 
 	private:
-		Util::ArrayStack<ComponentBase*, 128> _components;
+		Util::Array<ComponentBase*> _components;
 	};
 
 	template<typename COMPONENT>

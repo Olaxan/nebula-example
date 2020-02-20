@@ -262,35 +262,57 @@ ExampleApplication::Run()
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
 
-    const Entities::GameEntityId playerEntity = Entities::CreateEntity();
-    const Components::InstanceId playerTransform = Components::Register<Components::TransformComponent>(playerEntity);
-    const Components::InstanceId playerGraphics = Components::Register<Components::GraphicsComponent>(playerEntity);
+    const Entities::GameEntityId entGround = Entities::CreateEntity();
+    const Components::InstanceId trfGround = Components::Register<Components::TransformComponent>(entGround);
+    const Components::InstanceId gfxGround = Components::Register<Components::GraphicsComponent>(entGround);
 	
-    Components::Transforms()->SetWorldTransform(playerTransform, Math::matrix44::translation(Math::point(0, 0, 0)));
+    Components::Transforms()->SetWorldTransform(trfGround, Math::matrix44::translation(Math::point(0, 0, 0)));
 
-	Components::Graphics()->SetResourceUri(playerGraphics, "mdl:environment/Groundplane.n3");
-    Components::Graphics()->SetTag(playerGraphics, "Examples");
-    Components::Graphics()->SetVisibilityType(playerGraphics, Model);
-    Components::Graphics()->Setup(playerGraphics);
+	Components::Graphics()->SetResourceUri(gfxGround, "mdl:environment/Groundplane.n3");
+    Components::Graphics()->SetTag(gfxGround, "Examples");
+    Components::Graphics()->SetVisibilityType(gfxGround, Model);
+    Components::Graphics()->Setup(gfxGround);
 
-    const Entities::GameEntityId movingEntity = Entities::CreateEntity();
-    const Components::InstanceId movingTransform = Components::Register<Components::TransformComponent>(movingEntity);
-    const Components::InstanceId movingGraphics = Components::Register<Components::GraphicsComponent>(movingEntity);
-    const Components::InstanceId movingCharacter = Components::Register <Components::CharacterComponent>(movingEntity);
+    //Footman 1
+	
+    const Entities::GameEntityId entFootman = Entities::CreateEntity();
+    const Components::InstanceId trfFootman = Components::Register<Components::TransformComponent>(entFootman);
+    const Components::InstanceId gfxFootman = Components::Register<Components::GraphicsComponent>(entFootman);
+    const Components::InstanceId chaFootman = Components::Register <Components::CharacterComponent>(entFootman);
 
-    Components::Transforms()->SetWorldTransform(movingTransform, Math::matrix44::translation(Math::point(5, 0, 0)));
+    Components::Transforms()->SetWorldTransform(trfFootman, Math::matrix44::translation(Math::point(5, 0, 0)));
 
-	Components::Graphics()->SetResourceUri(movingGraphics, "mdl:Units/Unit_Footman.n3");
-    Components::Graphics()->SetTag(movingGraphics, "Examples");
-    Components::Graphics()->SetVisibilityType(movingGraphics, Model);
-    auto animId = Components::Graphics()->Setup(movingGraphics);
+	Components::Graphics()->SetResourceUri(gfxFootman, "mdl:Units/Unit_Footman.n3");
+    Components::Graphics()->SetTag(gfxFootman, "Examples");
+    Components::Graphics()->SetVisibilityType(gfxFootman, Model);
+    auto animId = Components::Graphics()->Setup(gfxFootman);
 
-    Components::Characters()->SetSkeletonUri(movingCharacter, "ske:Units/Unit_Footman.nsk3");
-    Components::Characters()->SetAnimationUri(movingCharacter, "ani:Units/Unit_Footman.nax3");
-    Components::Characters()->SetTag(movingCharacter, "Examples");
-    Components::Characters()->Setup(movingCharacter);
+    Components::Characters()->SetSkeletonUri(chaFootman, "ske:Units/Unit_Footman.nsk3");
+    Components::Characters()->SetAnimationUri(chaFootman, "ani:Units/Unit_Footman.nax3");
+    Components::Characters()->SetTag(chaFootman, "Examples");
+    Components::Characters()->Setup(chaFootman);
 	
     Characters::CharacterContext::PlayClip(animId, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+
+	//Footman 2
+    const Entities::GameEntityId entFootman2 = Entities::CreateEntity();
+    const Components::InstanceId trfFootman2 = Components::Register<Components::TransformComponent>(entFootman2);
+    const Components::InstanceId gfxFootman2 = Components::Register<Components::GraphicsComponent>(entFootman2);
+    const Components::InstanceId chaFootman2 = Components::Register <Components::CharacterComponent>(entFootman2);
+
+    Components::Transforms()->SetWorldTransform(trfFootman2, Math::matrix44::translation(Math::point(5, 0, 0)));
+
+    Components::Graphics()->SetResourceUri(gfxFootman2, "mdl:Units/Unit_Footman.n3");
+    Components::Graphics()->SetTag(gfxFootman2, "Examples");
+    Components::Graphics()->SetVisibilityType(gfxFootman2, Model);
+    auto animId2 = Components::Graphics()->Setup(gfxFootman2);
+
+    Components::Characters()->SetSkeletonUri(chaFootman2, "ske:Units/Unit_Footman.nsk3");
+    Components::Characters()->SetAnimationUri(chaFootman2, "ani:Units/Unit_Footman.nax3");
+    Components::Characters()->SetTag(chaFootman2, "Examples");
+    Components::Characters()->Setup(chaFootman2);
+
+    Characters::CharacterContext::PlayClip(animId2, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
 
     // Create a point light entity
     Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
@@ -310,11 +332,15 @@ ExampleApplication::Run()
     	
         this->inputServer->OnFrame();
 
-        Math::point point = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5, 0, Math::n_cos(this->frameIndex / 100.0f) * 5);
-        Math::matrix44 trans = Math::matrix44::translation(point);
-        Math::matrix44 rot = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
+        Math::point point1 = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5, 0, Math::n_cos(this->frameIndex / 100.0f) * 5);
+        Math::point point2 = Math::point(Math::n_cos(this->frameIndex / 100.0f) * 7, 0, Math::n_sin(this->frameIndex / 100.0f) * 7);
+        Math::matrix44 trans1 = Math::matrix44::translation(point1);
+        Math::matrix44 trans2 = Math::matrix44::translation(point2);
+        Math::matrix44 rot1 = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
+        Math::matrix44 rot2 = Math::matrix44::rotationy(Math::n_deg2rad(0) - this->frameIndex / 100.0f);
 
-        Components::Transforms()->SetWorldTransform(movingTransform, rot * trans);
+        Components::Transforms()->SetWorldTransform(trfFootman, rot1 * trans1);
+        Components::Transforms()->SetWorldTransform(trfFootman2, rot2 * trans2);
 
     	this->resMgr->Update(this->frameIndex);
 

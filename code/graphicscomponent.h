@@ -37,11 +37,11 @@ namespace Components
 	private:
 		struct GraphicsData
 		{
-			Util::ArrayStack<Util::String, 128> uri;
-			Util::ArrayStack<Util::StringAtom, 128> tag;
-			Util::ArrayStack<InstanceId, 128> transform_id;
-			Util::ArrayStack<Graphics::GraphicsEntityId, 128> gfx_id;
-			Util::ArrayStack<Visibility::VisibilityEntityType, 128> visibility_type;
+			Util::Array<Util::String> uri;
+			Util::Array<Util::StringAtom> tag;
+			Util::Array<InstanceId> transform_id;
+			Util::Array<Graphics::GraphicsEntityId> gfx_id;
+			Util::Array<Visibility::VisibilityEntityType> visibility_type;
 		} _data;
 	};
 

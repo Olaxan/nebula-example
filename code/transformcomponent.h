@@ -12,11 +12,6 @@ namespace Components
 		__DeclareClass(TransformComponent)
 		__DeclareSingleton(TransformComponent)
 
-		struct TransformData
-		{
-			Util::ArrayStack<Math::matrix44, 128> transforms;
-		};
-
 	public:
 		TransformComponent() { __ConstructSingleton; }
 		~TransformComponent() { __DestructSingleton; }
@@ -27,7 +22,10 @@ namespace Components
 		void SetWorldTransform(InstanceId idx, Math::matrix44 transform) { _data.transforms[idx] = transform; }
 		
 	private:
-		TransformData _data;
+		struct TransformData
+		{
+			Util::Array<Math::matrix44> transforms;
+		} _data;
 	};
 
 	inline TransformComponent* Transforms()

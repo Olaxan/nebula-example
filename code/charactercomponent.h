@@ -38,10 +38,10 @@ namespace Components
 	private:
 		struct GraphicsData
 		{
-			Util::ArrayStack<Util::String, 128> skel_uri;
-			Util::ArrayStack<Util::String, 128> anim_uri;
-			Util::ArrayStack<Util::StringAtom, 128> tag;
-			Util::ArrayStack<InstanceId, 128> graphics_id;
+			Util::Array<Util::String> skel_uri;
+			Util::Array<Util::String> anim_uri;
+			Util::Array<Util::StringAtom> tag;
+			Util::Array<InstanceId> graphics_id;
 		} _data;
 	};
 

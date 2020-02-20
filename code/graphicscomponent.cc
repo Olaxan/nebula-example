@@ -18,7 +18,7 @@ namespace Components
 
 	Graphics::GraphicsEntityId GraphicsComponent::Setup(InstanceId instance)
 	{
-		auto entity = Graphics::CreateEntity();
+		const auto entity = Graphics::CreateEntity();
 		Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext>(entity);
 		Models::ModelContext::Setup(entity, GetResourceUri(instance), GetTag(instance));
 		const auto trans = Transforms()->GetWorldTransform(_data.transform_id[instance]);
