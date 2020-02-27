@@ -4,20 +4,20 @@ namespace Components
 {
 
 	__ImplementAbstractClass(Components::ComponentBase, 'COMP', Core::RefCounted)
-	__ImplementInterfaceSingleton(ComponentBase)
+	__ImplementInterfaceSingleton(Components::ComponentBase)
 	
 	InstanceId ComponentBase::RegisterEntity(const Entities::GameEntityId e)
 	{
 		if (this->HasComponent(e))
 			return this->GetComponent(e);
 
-		InitializeDefault();
+		AppendDefault();
 		
-		const InstanceId idx = _entities.Size();
+		const InstanceId idx = _count;
 		_entities.Add(e, idx);
-		_owners.Add(idx, e);
-		_count++;
+		_owners.Append(e);
 		this->OnActivate(idx);
+		_count++;
 		return idx;
 	}
 
@@ -27,7 +27,16 @@ namespace Components
 		{
 			const InstanceId idx = this->GetComponent(e);
 			this->OnDeactivate(idx);
+
+			const InstanceId last = _count - 1;
+			const Entities::GameEntityId last_e = GetOwner(last);
+			RemovePack(idx, last);
+			
+			_entities[last_e] = idx;
 			_entities.Erase(e);
+
+			_owners[last] = last_e;
+
 			_count--;
 		}
 	}
@@ -44,6 +53,6 @@ namespace Components
 
 	Entities::GameEntityId ComponentBase::GetOwner(InstanceId idx) const
 	{
-		return _owners.Contains(idx) ? _owners[idx] : 0; //TODO: Return a better invalid-value.
+		return _owners[idx];
 	}
 }

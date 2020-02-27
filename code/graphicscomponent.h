@@ -16,11 +16,13 @@ namespace Components
 		GraphicsComponent() { __ConstructSingleton; }
 		~GraphicsComponent() { __DestructSingleton; }
 
-		void InitializeDefault() override;
-
 		Graphics::GraphicsEntityId Setup(InstanceId instance);
+
+		void AppendDefault() override;		
+		void RemovePack(InstanceId rm, InstanceId last) override;
 		
 		void OnActivate(InstanceId instance) override;
+		void OnDeactivate(InstanceId instance) override;
 		void OnBeginFrame() override;
 
 		[[nodiscard]] Util::String GetResourceUri(const InstanceId idx) const { return _data.uri[idx]; }

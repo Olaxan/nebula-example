@@ -4,6 +4,7 @@
 //------------------------------------------------------------------------------
 #include "foundation/stdneb.h"
 #include "entitymanager.h"
+#include "componentmanager.h"
 
 namespace Entities
 {
@@ -43,6 +44,7 @@ namespace Entities
 	void GameEntityManager::DestroyGameEntity(GameEntityId e)
 	{
 		pool.Deallocate(e.id);
+		Components::ComponentManager::Instance()->OnDestroy(e);
 		count--;
 	}
 }

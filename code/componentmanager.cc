@@ -2,8 +2,8 @@
 
 namespace Components
 {
-	__ImplementClass(ComponentManager, 'CMGR', Core::RefCounted)
-	__ImplementSingleton(ComponentManager)
+	__ImplementClass(Components::ComponentManager, 'CMGR', Core::RefCounted)
+	__ImplementSingleton(Components::ComponentManager)
 	
 	void ComponentManager::RegisterComponent(ComponentBase* comp)
 	{

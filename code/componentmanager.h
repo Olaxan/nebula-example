@@ -40,6 +40,13 @@ namespace Components
 				comp->OnEndFrame();
 			}
 		}
+		void OnDestroy(Entities::GameEntityId e)
+		{
+			for (auto comp: _components)
+			{
+				comp->DeregisterEntity(e);
+			}
+		}
 
 	private:
 		Util::Array<ComponentBase*> _components;

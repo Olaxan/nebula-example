@@ -7,15 +7,6 @@ namespace Components
 	__ImplementClass(Components::GraphicsComponent, 'GFXC', Components::ComponentBase)
 	__ImplementSingleton(Components::GraphicsComponent)
 
-	void GraphicsComponent::InitializeDefault()
-	{
-		_data.uri.Append(Util::String(""));
-		_data.tag.Append(Util::StringAtom("Empty"));
-		_data.transform_id.Append(0);
-		_data.gfx_id.Append(0);
-		_data.visibility_type.Append(Visibility::VisibilityEntityType::Model);
-	}
-
 	Graphics::GraphicsEntityId GraphicsComponent::Setup(InstanceId instance)
 	{
 		const auto entity = Graphics::CreateEntity();
@@ -28,12 +19,34 @@ namespace Components
 		return entity;
 	}
 
+	void GraphicsComponent::AppendDefault()
+	{
+		_data.uri.Append(Util::String(""));
+		_data.tag.Append(Util::StringAtom("Empty"));
+		_data.transform_id.Append(0);
+		_data.gfx_id.Append(0);
+		_data.visibility_type.Append(Visibility::VisibilityEntityType::Model);
+	}
+
+	void GraphicsComponent::RemovePack(InstanceId rm, InstanceId last)
+	{
+		_data.gfx_id[rm] = _data.gfx_id[last];
+		_data.tag[rm] = _data.tag[last];
+		_data.transform_id[rm] = _data.transform_id[last];
+		_data.uri[rm] = _data.uri[last];
+		_data.visibility_type[rm] = _data.visibility_type[last];
+	}
+
 	void GraphicsComponent::OnActivate(InstanceId instance)
 	{
 		const Entities::GameEntityId owner = GetOwner(instance);
-		if (Components::HasComponent<TransformComponent>(owner))
-			_data.transform_id[instance] = Components::GetComponent<TransformComponent>(owner);
-		else n_warning("OnActivate [%u]: Graphics component requires valid transform component\n", instance);
+		//n_assert(Components::HasComponent<TransformComponent>(owner), "OnActivate: Graphics component requires valid transform component\n");
+		_data.transform_id[instance] = Components::GetComponent<TransformComponent>(owner);
+	}
+
+	void GraphicsComponent::OnDeactivate(InstanceId instance)
+	{
+		Graphics::DeregisterEntity<Models::ModelContext, Visibility::ObservableContext>(_data.gfx_id[instance]);
 	}
 
 	void GraphicsComponent::OnBeginFrame()

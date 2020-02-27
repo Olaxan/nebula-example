@@ -285,7 +285,7 @@ ExampleApplication::Run()
 	Components::Graphics()->SetResourceUri(gfxFootman, "mdl:Units/Unit_Footman.n3");
     Components::Graphics()->SetTag(gfxFootman, "Examples");
     Components::Graphics()->SetVisibilityType(gfxFootman, Model);
-    auto animId = Components::Graphics()->Setup(gfxFootman);
+    const auto animId = Components::Graphics()->Setup(gfxFootman);
 
     Components::Characters()->SetSkeletonUri(chaFootman, "ske:Units/Unit_Footman.nsk3");
     Components::Characters()->SetAnimationUri(chaFootman, "ani:Units/Unit_Footman.nax3");
@@ -305,7 +305,7 @@ ExampleApplication::Run()
     Components::Graphics()->SetResourceUri(gfxFootman2, "mdl:Units/Unit_Footman.n3");
     Components::Graphics()->SetTag(gfxFootman2, "Examples");
     Components::Graphics()->SetVisibilityType(gfxFootman2, Model);
-    auto animId2 = Components::Graphics()->Setup(gfxFootman2);
+    const auto animId2 = Components::Graphics()->Setup(gfxFootman2);
 
     Components::Characters()->SetSkeletonUri(chaFootman2, "ske:Units/Unit_Footman.nsk3");
     Components::Characters()->SetAnimationUri(chaFootman2, "ani:Units/Unit_Footman.nax3");
@@ -380,6 +380,9 @@ ExampleApplication::Run()
         
 		if (this->inputServer->GetDefaultKeyboard()->KeyPressed(Input::Key::F8))
 			Resources::ResourceManager::Instance()->ReloadResource("shd:imgui.fxb");
+
+        if (this->inputServer->GetDefaultKeyboard()->KeyUp(Input::Key::Delete))
+            Entities::DestroyEntity(entFootman2);
 
 		if (this->inputServer->GetDefaultKeyboard()->KeyDown(Input::Key::F1))
 		{

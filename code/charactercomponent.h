@@ -20,11 +20,13 @@ namespace Components
 		CharacterComponent() { __ConstructSingleton; }
 		~CharacterComponent() { __DestructSingleton; }
 
-		void InitializeDefault() override;
+		void AppendDefault() override;
+		void RemovePack(InstanceId rm, InstanceId last) override;
 
 		Graphics::GraphicsEntityId Setup(InstanceId instance);
 
 		void OnActivate(InstanceId instance) override;
+		void OnDeactivate(InstanceId instance) override;
 
 		[[nodiscard]] Util::String GetSkeletonUri(const InstanceId idx) const { return _data.skel_uri[idx]; }
 		void SetSkeletonUri(const InstanceId idx, const Util::String& uri) { _data.skel_uri[idx] = uri; }

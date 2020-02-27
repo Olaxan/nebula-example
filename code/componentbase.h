@@ -13,7 +13,7 @@ namespace Components
 		__DeclareInterfaceSingleton(ComponentBase)
 
 	public:
-		ComponentBase() = default;
+		ComponentBase() : _count(0) {};
 		virtual ~ComponentBase() = default;
 		
 		[[nodiscard]] InstanceId RegisterEntity(Entities::GameEntityId e);
@@ -24,8 +24,9 @@ namespace Components
 		[[nodiscard]] Entities::GameEntityId GetOwner(InstanceId idx) const;
 		[[nodiscard]] SizeT Count() const { return _count; }
 
-		virtual void InitializeDefault() {}
-		
+		virtual void AppendDefault() = 0;
+		virtual void RemovePack(InstanceId rm, InstanceId last) = 0;
+
 		virtual void OnActivate(InstanceId instance)			{}
 		virtual void OnDeactivate(InstanceId instance)			{}
 		virtual void OnBeginFrame()								{}
@@ -33,9 +34,9 @@ namespace Components
 		virtual void OnEndFrame()								{}
 		virtual void OnMessage(InstanceId instance, int msg)	{}
 
-	private:
+	protected:
 		Util::HashTable<Entities::GameEntityId, InstanceId> _entities;
-		Util::HashTable<InstanceId, Entities::GameEntityId> _owners;
+		Util::Array<Entities::GameEntityId> _owners;
 		SizeT _count;
 	};
 
