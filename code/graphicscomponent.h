@@ -19,7 +19,7 @@ namespace Components
 		Graphics::GraphicsEntityId Setup(InstanceId instance);
 
 		void AppendDefault() override;		
-		void RemovePack(InstanceId rm, InstanceId last) override;
+		void EraseInstance(InstanceId instance) override;
 		
 		void OnActivate(InstanceId instance) override;
 		void OnDeactivate(InstanceId instance) override;

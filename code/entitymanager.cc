@@ -43,8 +43,11 @@ namespace Entities
 	
 	void GameEntityManager::DestroyGameEntity(GameEntityId e)
 	{
-		pool.Deallocate(e.id);
-		Components::ComponentManager::Instance()->OnDestroy(e);
-		count--;
+		if (IsAlive(e))
+		{
+			pool.Deallocate(e.id);
+			Components::ComponentManager::Instance()->OnDestroy(e);
+			count--;
+		}
 	}
 }

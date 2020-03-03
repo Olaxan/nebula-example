@@ -25,7 +25,7 @@ namespace Components
 		[[nodiscard]] SizeT Count() const { return _count; }
 
 		virtual void AppendDefault() = 0;
-		virtual void RemovePack(InstanceId rm, InstanceId last) = 0;
+		virtual void EraseInstance(InstanceId instance) = 0;
 
 		virtual void OnActivate(InstanceId instance)			{}
 		virtual void OnDeactivate(InstanceId instance)			{}

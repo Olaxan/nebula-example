@@ -11,8 +11,8 @@ namespace Components
 		_data.transforms.Append(Math::matrix44::translation(Math::point(0, 0, 0)));
 	}
 
-	void TransformComponent::RemovePack(InstanceId rm, InstanceId last)
+	void TransformComponent::EraseInstance(const InstanceId instance)
 	{
-		_data.transforms[rm] = _data.transforms[last];
+		_data.transforms.EraseIndexSwap(instance);
 	}
 }

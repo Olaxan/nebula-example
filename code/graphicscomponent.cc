@@ -28,19 +28,19 @@ namespace Components
 		_data.visibility_type.Append(Visibility::VisibilityEntityType::Model);
 	}
 
-	void GraphicsComponent::RemovePack(InstanceId rm, InstanceId last)
+	void GraphicsComponent::EraseInstance(const InstanceId instance)
 	{
-		_data.gfx_id[rm] = _data.gfx_id[last];
-		_data.tag[rm] = _data.tag[last];
-		_data.transform_id[rm] = _data.transform_id[last];
-		_data.uri[rm] = _data.uri[last];
-		_data.visibility_type[rm] = _data.visibility_type[last];
+		_data.gfx_id.EraseIndexSwap(instance);
+		_data.tag.EraseIndexSwap(instance);
+		_data.transform_id.EraseIndexSwap(instance);
+		_data.uri.EraseIndexSwap(instance);
+		_data.visibility_type.EraseIndexSwap(instance);
 	}
 
 	void GraphicsComponent::OnActivate(InstanceId instance)
 	{
 		const Entities::GameEntityId owner = GetOwner(instance);
-		//n_assert(Components::HasComponent<TransformComponent>(owner), "OnActivate: Graphics component requires valid transform component\n");
+		n_assert2(Components::HasComponent<TransformComponent>(owner), "OnActivate: Graphics component requires valid transform component\n");
 		_data.transform_id[instance] = Components::GetComponent<TransformComponent>(owner);
 	}
 

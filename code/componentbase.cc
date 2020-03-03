@@ -18,6 +18,7 @@ namespace Components
 		_owners.Append(e);
 		this->OnActivate(idx);
 		_count++;
+		
 		return idx;
 	}
 
@@ -30,12 +31,12 @@ namespace Components
 
 			const InstanceId last = _count - 1;
 			const Entities::GameEntityId last_e = GetOwner(last);
-			RemovePack(idx, last);
 			
+			_owners.EraseIndexSwap(idx);
+			EraseInstance(idx);
+
 			_entities[last_e] = idx;
 			_entities.Erase(e);
-
-			_owners[last] = last_e;
 
 			_count--;
 		}

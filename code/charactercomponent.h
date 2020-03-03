@@ -21,11 +21,10 @@ namespace Components
 		~CharacterComponent() { __DestructSingleton; }
 
 		void AppendDefault() override;
-		void RemovePack(InstanceId rm, InstanceId last) override;
+		void EraseInstance(InstanceId instance) override;
 
 		Graphics::GraphicsEntityId Setup(InstanceId instance);
 
-		void OnActivate(InstanceId instance) override;
 		void OnDeactivate(InstanceId instance) override;
 
 		[[nodiscard]] Util::String GetSkeletonUri(const InstanceId idx) const { return _data.skel_uri[idx]; }
@@ -40,10 +39,10 @@ namespace Components
 	private:
 		struct GraphicsData
 		{
+			Util::Array<Graphics::GraphicsEntityId> gfx_id;
 			Util::Array<Util::String> skel_uri;
 			Util::Array<Util::String> anim_uri;
 			Util::Array<Util::StringAtom> tag;
-			Util::Array<InstanceId> graphics_id;
 		} _data;
 	};
 
