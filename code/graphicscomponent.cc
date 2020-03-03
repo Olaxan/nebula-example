@@ -16,15 +16,16 @@ namespace Components
 		Models::ModelContext::SetTransform(entity, trans);
 		Visibility::ObservableContext::Setup(entity, GetVisibilityType(instance));
 		_data.gfx_id[instance] = entity;
+		n_printf("Graphics gfx id is %i\n", entity);
 		return entity;
 	}
 
 	void GraphicsComponent::AppendDefault()
 	{
+		_data.gfx_id.Append(0);
 		_data.uri.Append(Util::String(""));
 		_data.tag.Append(Util::StringAtom("Empty"));
 		_data.transform_id.Append(0);
-		_data.gfx_id.Append(0);
 		_data.visibility_type.Append(Visibility::VisibilityEntityType::Model);
 	}
 

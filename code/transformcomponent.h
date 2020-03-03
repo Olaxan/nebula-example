@@ -18,6 +18,8 @@ namespace Components
 
 		void AppendDefault() override;
 		void EraseInstance(InstanceId instance) override;
+
+		void OnDestroy(Entities::GameEntityId entity) override;
 		
 		[[nodiscard]] Math::matrix44 GetWorldTransform(InstanceId idx) const { return _data.transforms[idx]; }
 		void SetWorldTransform(InstanceId idx, Math::matrix44 transform) { _data.transforms[idx] = transform; }

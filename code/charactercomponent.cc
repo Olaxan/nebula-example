@@ -33,11 +33,13 @@ namespace Components
 		_data.gfx_id[instance] = gfx_id;
 		Graphics::RegisterEntity<Characters::CharacterContext>(gfx_id);
 		Characters::CharacterContext::Setup(gfx_id, GetSkeletonUri(instance), GetAnimationUri(instance), GetTag(instance));
+		n_printf("Char gfx id is %i \n", gfx_id);
 		return gfx_id;
 	}
 
 	void CharacterComponent::OnDeactivate(InstanceId instance)
 	{
-		Graphics::DeregisterEntity<Characters::CharacterContext>(_data.gfx_id[instance]);
+		Characters::CharacterContext::StopAllTracks(_data.gfx_id[instance]);
+		Characters::CharacterContext::DeregisterEntity(_data.gfx_id[instance]);
 	}
 }

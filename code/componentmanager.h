@@ -44,6 +44,7 @@ namespace Components
 		{
 			for (auto comp: _components)
 			{
+				comp->OnDestroy(e);
 				comp->DeregisterEntity(e);
 			}
 		}

@@ -11,11 +11,11 @@ namespace Components
 		if (this->HasComponent(e))
 			return this->GetComponent(e);
 
+		_owners.Append(e);
 		AppendDefault();
 		
 		const InstanceId idx = _count;
 		_entities.Add(e, idx);
-		_owners.Append(e);
 		this->OnActivate(idx);
 		_count++;
 		

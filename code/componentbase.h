@@ -29,6 +29,7 @@ namespace Components
 
 		virtual void OnActivate(InstanceId instance)			{}
 		virtual void OnDeactivate(InstanceId instance)			{}
+		virtual void OnDestroy(Entities::GameEntityId entity)	{}
 		virtual void OnBeginFrame()								{}
 		virtual void OnRender()									{}
 		virtual void OnEndFrame()								{}

@@ -301,12 +301,13 @@ ExampleApplication::Run()
             Components::Transforms()->SetWorldTransform(trf_c, rot * trf);
         }
     	
+        this->cmpMgr->OnFrame();
         this->inputServer->OnFrame();
 
     	this->resMgr->Update(this->frameIndex);
 
-		this->gfxServer->BeginFrame();
         this->cmpMgr->OnBeginFrame();
+		this->gfxServer->BeginFrame();
     	
 		// put game code which doesn't need visibility data or animation here
 
@@ -321,7 +322,6 @@ ExampleApplication::Run()
         
         // put game code which need visibility data here
         this->gfxServer->RenderViews();
-        this->cmpMgr->OnFrame();
 
         // put game code which needs rendering to be done (animation etc) here
         this->gfxServer->EndViews();
@@ -345,7 +345,7 @@ ExampleApplication::Run()
             const Entities::GameEntityId ent = Entities::CreateEntity();
             const Components::InstanceId trf = Components::Register<Components::TransformComponent>(ent);
             const Components::InstanceId gfx = Components::Register<Components::GraphicsComponent>(ent);
-            const Components::InstanceId cha = Components::Register <Components::CharacterComponent>(ent);
+            const Components::InstanceId cha = Components::Register<Components::CharacterComponent>(ent);
 
             Components::Transforms()->SetWorldTransform(trf, Math::matrix44::translation(Math::point(5, 0, 0)));
 
@@ -369,7 +369,7 @@ ExampleApplication::Run()
             {
                 SizeT index = 0;
                 if (this->inputServer->GetDefaultKeyboard()->KeyPressed(Input::Key::LeftShift))
-                    index = Util::FastRandom() % (entities.Size() - 1);
+                    index = 0;
                 else
                     index = entities.Size() - 1;
 
