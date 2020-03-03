@@ -21,7 +21,6 @@ namespace Components
 		void AppendDefault() override;		
 		void EraseInstance(InstanceId instance) override;
 		
-		void OnActivate(InstanceId instance) override;
 		void OnDeactivate(InstanceId instance) override;
 		void OnBeginFrame() override;
 
@@ -41,7 +40,6 @@ namespace Components
 		{
 			Util::Array<Util::String> uri;
 			Util::Array<Util::StringAtom> tag;
-			Util::Array<InstanceId> transform_id;
 			Util::Array<Graphics::GraphicsEntityId> gfx_id;
 			Util::Array<Visibility::VisibilityEntityType> visibility_type;
 		} _data;

@@ -23,7 +23,7 @@ namespace Components
 		_data.tag.EraseIndexSwap(instance);
 	}
 
-	Graphics::GraphicsEntityId CharacterComponent::Setup(InstanceId instance)
+	Graphics::GraphicsEntityId CharacterComponent::Setup(const InstanceId instance)
 	{
 		const Entities::GameEntityId owner = GetOwner(instance);
 		n_assert2(Components::HasComponent<GraphicsComponent>(owner), "OnActivate: Character component requires valid graphics component\n");
@@ -33,13 +33,11 @@ namespace Components
 		_data.gfx_id[instance] = gfx_id;
 		Graphics::RegisterEntity<Characters::CharacterContext>(gfx_id);
 		Characters::CharacterContext::Setup(gfx_id, GetSkeletonUri(instance), GetAnimationUri(instance), GetTag(instance));
-		n_printf("Char gfx id is %i \n", gfx_id);
 		return gfx_id;
 	}
 
-	void CharacterComponent::OnDeactivate(InstanceId instance)
+	void CharacterComponent::OnDeactivate(const InstanceId instance)
 	{
-		Characters::CharacterContext::StopAllTracks(_data.gfx_id[instance]);
 		Characters::CharacterContext::DeregisterEntity(_data.gfx_id[instance]);
 	}
 }
