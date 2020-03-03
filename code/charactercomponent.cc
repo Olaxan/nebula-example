@@ -38,6 +38,10 @@ namespace Components
 
 	void CharacterComponent::OnDeactivate(const InstanceId instance)
 	{
-		Characters::CharacterContext::DeregisterEntity(_data.gfx_id[instance]);
+		if (Characters::CharacterContext::IsEntityRegistered(_data.gfx_id[instance]))
+		{
+			n_printf("De-registering instance %i, gfx %i from characters\n", instance, _data.gfx_id[instance]);
+			Characters::CharacterContext::DeregisterEntity(_data.gfx_id[instance]);
+		}
 	}
 }

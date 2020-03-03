@@ -14,7 +14,7 @@ namespace Components
 		Models::ModelContext::Setup(entity, GetResourceUri(instance), GetTag(instance));
 		Visibility::ObservableContext::Setup(entity, GetVisibilityType(instance));
 		_data.gfx_id[instance] = entity;
-		n_printf("Graphics gfx id is %i\n", entity);
+		n_printf("New graphics object id is %i\n", entity);
 		return entity;
 	}
 
@@ -36,6 +36,7 @@ namespace Components
 
 	void GraphicsComponent::OnDeactivate(InstanceId instance)
 	{
+		n_printf("De-registering instance %i, gfx %i from model, observable\n", instance, _data.gfx_id[instance]);
 		Graphics::DeregisterEntity<Models::ModelContext, Visibility::ObservableContext>(_data.gfx_id[instance]);
 	}
 

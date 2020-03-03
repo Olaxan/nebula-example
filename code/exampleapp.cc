@@ -359,7 +359,7 @@ ExampleApplication::Run()
             Components::Characters()->SetTag(cha, "Examples");
             Components::Characters()->Setup(cha);
 
-            Characters::CharacterContext::PlayClip(animId, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+            //Characters::CharacterContext::PlayClip(animId, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
             entities.Append(ent);
         }
     	
