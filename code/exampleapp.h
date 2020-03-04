@@ -49,6 +49,8 @@ protected:
     void ResetCamera();
     void ToMaya();
     void ToFree();
+    void MakeBoy();
+    void DeleteBoy();
 
 	Ptr<Core::CoreServer> coreServer;
     Ptr<Graphics::GraphicsServer> gfxServer;
@@ -58,6 +60,8 @@ protected:
     Ptr<Input::InputServer> inputServer;
     Ptr<IO::IoServer> ioServer;
 	Ptr<IO::IoInterface> ioInterface;
+
+    Util::Array<Entities::GameEntityId> entities;
 
     CoreGraphics::WindowId wnd;
     Ptr<Graphics::View> view;

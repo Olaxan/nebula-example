@@ -49,7 +49,8 @@ namespace Components
 
 	InstanceId ComponentBase::GetComponent(const Entities::GameEntityId e) const
 	{
-		return HasComponent(e) ? _entities[e] : 0;
+		n_assert2(HasComponent(e), "Entity doesn't have requested component");
+		return _entities[e];
 	}
 
 	Entities::GameEntityId ComponentBase::GetOwner(InstanceId idx) const

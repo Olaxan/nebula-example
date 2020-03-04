@@ -33,6 +33,7 @@ namespace Components
 		_data.gfx_id[instance] = gfx_id;
 		Graphics::RegisterEntity<Characters::CharacterContext>(gfx_id);
 		Characters::CharacterContext::Setup(gfx_id, GetSkeletonUri(instance), GetAnimationUri(instance), GetTag(instance));
+		n_printf("Registering entity %i, gfx id %i to character context\n", owner, gfx_id);
 		return gfx_id;
 	}
 
@@ -41,6 +42,7 @@ namespace Components
 		if (Characters::CharacterContext::IsEntityRegistered(_data.gfx_id[instance]))
 		{
 			n_printf("De-registering instance %i, gfx %i from characters\n", instance, _data.gfx_id[instance]);
+			Characters::CharacterContext::StopAllTracks(_data.gfx_id[instance]);
 			Characters::CharacterContext::DeregisterEntity(_data.gfx_id[instance]);
 		}
 	}

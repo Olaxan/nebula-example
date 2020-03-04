@@ -263,8 +263,6 @@ ExampleApplication::Run()
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
 
-    Util::Array<Entities::GameEntityId> entities;
-
     const Entities::GameEntityId entGround = Entities::CreateEntity();
     const Components::InstanceId trfGround = Components::Register<Components::TransformComponent>(entGround);
     const Components::InstanceId gfxGround = Components::Register<Components::GraphicsComponent>(entGround);
@@ -290,20 +288,12 @@ ExampleApplication::Run()
 
 		this->coreServer->Trigger();
 
-        this->inputServer->BeginFrame();
     	
-        for (SizeT i = 0; i < entities.Size(); i++)
-        {
-            Math::point pt = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5 + 2 * i, 0, Math::n_cos(this->frameIndex / 100.0f) * 5 + 2 * i);
-            Math::matrix44 trf = Math::matrix44::translation(pt);
-            Math::matrix44 rot = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
-            const auto trf_c = Components::GetComponent<Components::TransformComponent>(entities[i]);
-            Components::Transforms()->SetWorldTransform(trf_c, rot * trf);
-        }
+        this->inputServer->BeginFrame();
     	
         this->cmpMgr->OnFrame();
         this->inputServer->OnFrame();
-
+    	
     	this->resMgr->Update(this->frameIndex);
 
         this->cmpMgr->OnBeginFrame();
@@ -330,6 +320,20 @@ ExampleApplication::Run()
         this->gfxServer->EndFrame();
         this->cmpMgr->OnEndFrame();
 
+    	if (frameIndex % 300 == 0)
+        {
+            MakeBoy();
+        }
+
+        for (SizeT i = 0; i < entities.Size(); i++)
+        {
+            Math::point pt = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5 + 2 * i, 0, Math::n_cos(this->frameIndex / 100.0f) * 5 + 2 * i);
+            Math::matrix44 trf = Math::matrix44::translation(pt);
+            Math::matrix44 rot = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
+            const auto trf_c = Components::GetComponent<Components::TransformComponent>(entities[i]);
+            Components::Transforms()->SetWorldTransform(trf_c, rot * trf);
+        }
+
         // force wait immediately
         WindowPresent(wnd, frameIndex);
         if (this->inputServer->GetDefaultKeyboard()->KeyPressed(Input::Key::Escape)) run = false;        
@@ -342,40 +346,12 @@ ExampleApplication::Run()
 
         if (this->inputServer->GetDefaultKeyboard()->KeyDown((Input::Key::Return)))
         {
-            const Entities::GameEntityId ent = Entities::CreateEntity();
-            const Components::InstanceId trf = Components::Register<Components::TransformComponent>(ent);
-            const Components::InstanceId gfx = Components::Register<Components::GraphicsComponent>(ent);
-            const Components::InstanceId cha = Components::Register<Components::CharacterComponent>(ent);
-
-            Components::Transforms()->SetWorldTransform(trf, Math::matrix44::translation(Math::point(5, 0, 0)));
-
-            Components::Graphics()->SetResourceUri(gfx, "mdl:Units/Unit_Footman.n3");
-            Components::Graphics()->SetTag(gfx, "Examples");
-            Components::Graphics()->SetVisibilityType(gfx, Model);
-            const auto animId = Components::Graphics()->Setup(gfx);
-
-            Components::Characters()->SetSkeletonUri(cha, "ske:Units/Unit_Footman.nsk3");
-            Components::Characters()->SetAnimationUri(cha, "ani:Units/Unit_Footman.nax3");
-            Components::Characters()->SetTag(cha, "Examples");
-            Components::Characters()->Setup(cha);
-
-            //Characters::CharacterContext::PlayClip(animId, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
-            entities.Append(ent);
+            MakeBoy();
         }
     	
         if (this->inputServer->GetDefaultKeyboard()->KeyUp(Input::Key::Delete))
         {
-            if (entities.Size() > 0)
-            {
-                SizeT index = 0;
-                if (this->inputServer->GetDefaultKeyboard()->KeyPressed(Input::Key::LeftShift))
-                    index = 0;
-                else
-                    index = entities.Size() - 1;
-
-				Entities::DestroyEntity(entities[index]);
-                entities.EraseIndex(index);
-            }
+            DeleteBoy();
         }
 
 		if (this->inputServer->GetDefaultKeyboard()->KeyDown(Input::Key::F1))
@@ -546,4 +522,35 @@ ExampleApplication::ToFree()
     this->freeCamUtil.Setup(pos, Math::float4::normalize(pos - this->mayaCameraUtil.GetCenterOfInterest()));
 }
 
+void ExampleApplication::MakeBoy()
+{
+    const Entities::GameEntityId ent = Entities::CreateEntity();
+    const Components::InstanceId trf = Components::Register<Components::TransformComponent>(ent);
+    const Components::InstanceId gfx = Components::Register<Components::GraphicsComponent>(ent);
+    const Components::InstanceId cha = Components::Register<Components::CharacterComponent>(ent);
+
+    Components::Transforms()->SetWorldTransform(trf, Math::matrix44::translation(Math::point(5, 0, 0)));
+
+    Components::Graphics()->SetResourceUri(gfx, "mdl:Units/Unit_Footman.n3");
+    Components::Graphics()->SetTag(gfx, "Examples");
+    Components::Graphics()->SetVisibilityType(gfx, Model);
+    Components::Graphics()->Setup(gfx);
+
+    Components::Characters()->SetSkeletonUri(cha, "ske:Units/Unit_Footman.nsk3");
+    Components::Characters()->SetAnimationUri(cha, "ani:Units/Unit_Footman.nax3");
+    Components::Characters()->SetTag(cha, "Examples");
+    const auto animId = Components::Characters()->Setup(cha);
+
+    Characters::CharacterContext::PlayClip(animId, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+    this->entities.Append(ent);
+}
+
+void ExampleApplication::DeleteBoy()
+{
+    if (this->entities.Size() > 0)
+    {
+        Entities::DestroyEntity(entities[0]);
+        entities.EraseIndex(0);
+    }
+}
 }
