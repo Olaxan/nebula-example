@@ -96,8 +96,8 @@ ExampleApplication::Open()
         this->entMgr = Entities::GameEntityManager::Create();
         this->cmpMgr = Components::ComponentManager::Create();
         Components::RegisterComponent<Components::TransformComponent>();
-        Components::RegisterComponent<Components::GraphicsComponent>();
         Components::RegisterComponent<Components::CharacterComponent>();
+        Components::RegisterComponent<Components::GraphicsComponent>();
     	
 		Util::String root = IO::FSWrapper::GetHomeDirectory();
 
