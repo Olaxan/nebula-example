@@ -5,9 +5,11 @@ namespace Components
 	__ImplementClass(Components::ComponentManager, 'CMGR', Core::RefCounted)
 	__ImplementSingleton(Components::ComponentManager)
 	
-	void ComponentManager::RegisterComponent(ComponentBase* comp)
+	void ComponentManager::RegisterComponent(ComponentBase* comp, Util::FourCC fcc, Util::StringAtom name)
 	{
 		_components.Append(comp);
+		_components_fcc.Add(fcc, comp);
+		_components_name.Add(name, comp);
 	}
 
 	void ComponentManager::DeregisterComponent(ComponentBase* comp)
@@ -24,5 +26,25 @@ namespace Components
 			const InstanceId idx = comp->GetComponent(e);
 			comp->OnMessage(idx, msg);
 		}
+	}
+
+	ComponentBase* ComponentManager::GetComponentByFourCC(Util::FourCC fcc)
+	{
+		IndexT idx = this->_components_fcc.FindIndex(fcc);
+		if (idx != InvalidIndex)
+		{
+			return this->_components_fcc.ValueAtIndex(fcc, idx);
+		}
+		return nullptr;;
+	}
+
+	ComponentBase* ComponentManager::GetComponentByName(Util::StringAtom name)
+	{
+		IndexT idx = this->_components_name.FindIndex(name);
+		if (idx != InvalidIndex)
+		{
+			return this->_components_name.ValueAtIndex(name, idx);
+		}
+		return nullptr;
 	}
 }

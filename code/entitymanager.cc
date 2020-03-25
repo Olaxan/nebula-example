@@ -5,6 +5,7 @@
 #include "foundation/stdneb.h"
 #include "entitymanager.h"
 #include "componentmanager.h"
+#include "io/jsonreader.h"
 
 namespace Entities
 {
@@ -48,6 +49,58 @@ namespace Entities
 			pool.Deallocate(e.id);
 			Components::ComponentManager::Instance()->OnDestroy(e);
 			count--;
+		}
+	}
+
+	void GameEntityManager::Load(const IO::URI& file)
+	{
+		Ptr<IO::JsonReader> reader = IO::JsonReader::Create();
+		reader->SetStream(IO::IoServer::Instance()->CreateStream(file));
+		if (reader->Open())
+		{
+
+			reader->SetToFirstChild();
+			do
+			{
+				GameEntityId entity = CreateGameEntity();
+
+				if (reader->HasNode("components"))
+				{
+					reader->SetToFirstChild("components");
+					reader->SetToFirstChild();
+					do
+					{
+						Util::String name = reader->GetCurrentNodeName();
+						Components::ComponentBase* component = Components::GetComponentByName(name);
+
+						if (component == nullptr)
+							continue;
+
+						Components::InstanceId instance = component->RegisterEntity(entity);
+
+						auto attrs = reader->GetAttrs();
+
+						for (auto data : attrs)
+						{
+							Util::Variant value;
+							value.SetType(component->GetTypeByName(data));
+
+							if (reader->GetOpt(value, data.AsCharPtr()))
+							{
+								component->SetDataByName(instance, data, value);
+							}
+						}
+
+						component->OnLoad(instance);
+
+					} while (reader->SetToNextChild());
+
+					reader->SetToParent();
+				}
+
+			} while (reader->SetToNextChild());
+
+			reader->Close();
 		}
 	}
 }

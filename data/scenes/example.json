@@ -1,0 +1,19 @@
+{
+  "Footman": {
+    "components": {
+      "Transform": {
+        "transform": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 8.0, 0.0, 8.0, 1.0]
+      },
+      "Graphics": {
+        "res_uri": "mdl:Units/Unit_Footman.n3",
+		"tag": "Examples",
+		"visibility_type": 0
+      },
+      "Character": {
+        "skel_uri": "ske:Units/Unit_Footman.nsk3",
+		"anim_uri": "ani:Units/Unit_Footman.nax3",
+		"tag": "Examples"
+      }
+    }
+  }
+}

@@ -15,9 +15,12 @@ namespace Components
 		ComponentManager() { __ConstructSingleton }
 		~ComponentManager() { __DestructSingleton }
 		
-		void RegisterComponent(ComponentBase* comp);
+		void RegisterComponent(ComponentBase* comp, Util::FourCC fcc, Util::StringAtom name);
 		void DeregisterComponent(ComponentBase* comp);
 		void Message(Entities::GameEntityId e, int msg);
+
+		ComponentBase* GetComponentByFourCC(Util::FourCC fcc);
+		ComponentBase* GetComponentByName(Util::StringAtom name);
 		
 		void OnBeginFrame()
 		{
@@ -51,19 +54,31 @@ namespace Components
 
 	private:
 		Util::Array<ComponentBase*> _components;
+		Util::HashTable<Util::FourCC, ComponentBase*> _components_fcc;
+		Util::HashTable<Util::StringAtom, ComponentBase*> _components_name;
 	};
 
 	template<typename COMPONENT>
-	void RegisterComponent()
+	void RegisterComponent(Util::FourCC fcc, Util::StringAtom name)
 	{
 		if (!COMPONENT::HasInstance()) { COMPONENT::Create(); }
 		
-		ComponentManager::Instance()->RegisterComponent(COMPONENT::Instance());
+		ComponentManager::Instance()->RegisterComponent(COMPONENT::Instance(), fcc, name);
 	}
 
 	inline void DeregisterComponent(ComponentBase* comp)
 	{
 		ComponentManager::Instance()->DeregisterComponent(comp);
+	}
+
+	inline ComponentBase* GetComponentByFourCC(Util::FourCC fcc)
+	{
+		return ComponentManager::Instance()->GetComponentByFourCC(fcc);
+	}
+
+	inline ComponentBase* GetComponentByName(Util::StringAtom name)
+	{
+		return ComponentManager::Instance()->GetComponentByName(name);
 	}
 
 	inline void Message(Entities::GameEntityId e, int temp_msg)

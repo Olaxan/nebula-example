@@ -21,7 +21,7 @@ namespace Components
 	void GraphicsComponent::AppendDefault()
 	{
 		_data.gfx_id.Append(0);
-		_data.uri.Append(Util::String(""));
+		_data.res_uri.Append(Util::String(""));
 		_data.tag.Append(Util::StringAtom("Empty"));
 		_data.visibility_type.Append(Visibility::VisibilityEntityType::Model);
 	}
@@ -30,8 +30,13 @@ namespace Components
 	{
 		_data.gfx_id.EraseIndexSwap(instance);
 		_data.tag.EraseIndexSwap(instance);
-		_data.uri.EraseIndexSwap(instance);
+		_data.res_uri.EraseIndexSwap(instance);
 		_data.visibility_type.EraseIndexSwap(instance);
+	}
+
+	void GraphicsComponent::OnLoad(InstanceId instance)
+	{
+		Setup(instance);
 	}
 
 	void GraphicsComponent::OnDeactivate(InstanceId instance)
@@ -52,5 +57,53 @@ namespace Components
 			auto trans = Transforms()->GetWorldTransform(trf_id);
 			Models::ModelContext::SetTransform(gfx_id, trans);
 		}
+	}
+
+	Util::Variant::Type GraphicsComponent::GetTypeByName(Util::String data)
+	{
+		if (data == "res_uri")
+			return Util::Variant::Type::String;
+
+		if (data == "tag")
+			return Util::Variant::Type::String;
+
+		if (data == "gfx_id")
+			return Util::Variant::Type::Int;
+
+		if (data == "visibility_type")
+			return Util::Variant::Type::Int;
+
+
+		return Util::Variant::Type::Void;
+	}
+
+	bool GraphicsComponent::SetDataByName(InstanceId instance, Util::String data, Util::Variant value)
+	{
+		if (data == "res_uri")
+		{
+			_data.res_uri[instance] = value.GetString();
+			return true;
+		}
+
+		if (data == "tag")
+		{
+			_data.tag[instance] = value.GetString();
+			return true;
+		}
+
+		if (data == "gfx_id")
+		{
+			n_warning("Graphics ID should not be manually changed.");
+			_data.gfx_id[instance] = value.GetInt();
+			return true;
+		}
+
+		if (data == "visibility_type")
+		{
+			_data.visibility_type[instance] = static_cast<Visibility::VisibilityEntityType>(value.GetInt());
+			return true;
+		}
+
+		return false;
 	}
 }

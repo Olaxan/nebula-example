@@ -22,6 +22,7 @@ namespace Entities
 		bool IsAlive(GameEntityId e) const;
 		void DestroyGameEntity(GameEntityId e);
 		SizeT Count() const { return count; }
+		void Load(const IO::URI& file);
 		
 	private:
 

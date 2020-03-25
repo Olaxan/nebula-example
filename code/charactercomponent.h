@@ -22,9 +22,15 @@ namespace Components
 
 		void AppendDefault() override;
 		void EraseInstance(InstanceId instance) override;
+		Util::Variant::Type GetTypeByName(Util::String data);
+		bool SetDataByName(InstanceId instance, Util::String data, Util::Variant value);
 
 		Graphics::GraphicsEntityId Setup(InstanceId instance);
 
+		void Play(InstanceId instance, IndexT clip, IndexT track);
+		void Queue(InstanceId instance, IndexT clip, IndexT track);
+
+		void OnLoad(InstanceId instance) override;
 		void OnDeactivate(InstanceId instance) override;
 
 		[[nodiscard]] Util::String GetSkeletonUri(const InstanceId idx) const { return _data.skel_uri[idx]; }

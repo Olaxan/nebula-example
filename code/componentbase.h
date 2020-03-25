@@ -26,7 +26,10 @@ namespace Components
 
 		virtual void AppendDefault() = 0;
 		virtual void EraseInstance(InstanceId instance) = 0;
+		virtual bool SetDataByName(InstanceId instance, Util::String data, Util::Variant value) = 0;
+		virtual Util::Variant::Type GetTypeByName(Util::String data) = 0;
 
+		virtual void OnLoad(InstanceId instance)				{}
 		virtual void OnActivate(InstanceId instance)			{}
 		virtual void OnDeactivate(InstanceId instance)			{}
 		virtual void OnDestroy(Entities::GameEntityId entity)	{}

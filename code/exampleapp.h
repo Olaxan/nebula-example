@@ -20,6 +20,7 @@
 #include "http/httpinterface.h"
 #include "http/httpserverproxy.h"     
 #include "http/httpclientregistry.h"
+#include "scripting/python/pythonserver.h"
 #include "core/coreserver.h"
 #include "io/iointerface.h"
 #include "entitymanager.h"
@@ -58,6 +59,7 @@ protected:
     Ptr<Entities::GameEntityManager> entMgr;
     Ptr<Components::ComponentManager> cmpMgr;
     Ptr<Input::InputServer> inputServer;
+	Ptr<Scripting::PythonServer> pyServer;
     Ptr<IO::IoServer> ioServer;
 	Ptr<IO::IoInterface> ioInterface;
 

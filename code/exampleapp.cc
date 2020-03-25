@@ -30,6 +30,7 @@
 #include "memory/debug/memorypagehandler.h"
 #include "io/debug/iopagehandler.h"
 #include "io/fswrapper.h"
+#include "profiling/profiling.h"
 #include "system/nebulasettings.h"
 #include "componentmanager.h"
 #include "componentbase.h"
@@ -90,14 +91,17 @@ ExampleApplication::Open()
 		this->ioInterface = IO::IoInterface::Create();
 		this->ioInterface->Open();
 
+		this->pyServer = Scripting::PythonServer::Create();
+		this->pyServer->Open();
+
 		this->resMgr = Resources::ResourceManager::Create();
 		this->resMgr->Open();
 
         this->entMgr = Entities::GameEntityManager::Create();
         this->cmpMgr = Components::ComponentManager::Create();
-        Components::RegisterComponent<Components::TransformComponent>();
-        Components::RegisterComponent<Components::CharacterComponent>();
-        Components::RegisterComponent<Components::GraphicsComponent>();
+        Components::RegisterComponent<Components::TransformComponent>('TRFC', "Transform");
+        Components::RegisterComponent<Components::CharacterComponent>('CHRC', "Character");
+        Components::RegisterComponent<Components::GraphicsComponent>('GFXC', "Graphics");
     	
 		Util::String root = IO::FSWrapper::GetHomeDirectory();
 
@@ -166,6 +170,10 @@ ExampleApplication::Open()
         };
         this->wnd = CreateWindow(wndInfo);
 		this->cam = Graphics::CreateEntity();
+
+#if NEBULA_ENABLE_PROFILING
+		Profiling::ProfilingRegisterThread();
+#endif
 
         // create contexts, this could and should be bundled together
         CameraContext::Create();
@@ -279,9 +287,16 @@ ExampleApplication::Run()
     // You can also register to contexts directly
     Lighting::LightContext::RegisterEntity(pointLight);
     Lighting::LightContext::SetupPointLight(pointLight, Math::float4(4.5, 0.5, 0.2, 1), 10.0f, Math::matrix44::translation(1, 2, 1), 100.0f, true);
+
+	//this->pyServer->EvalFile("scr:init.py");
+	this->entMgr->Load("proj:data/scenes/example.json");
 	
     while (run && !inputServer->IsQuitRequested())
     {   
+#if NEBULA_ENABLE_PROFILING
+		Profiling::ProfilingNewFrame();
+#endif
+
 #if __NEBULA_HTTP__
 		this->httpServerProxy->HandlePendingRequests();
 #endif
@@ -320,19 +335,14 @@ ExampleApplication::Run()
         this->gfxServer->EndFrame();
         this->cmpMgr->OnEndFrame();
 
-    	if (frameIndex % 300 == 0)
-        {
-            MakeBoy();
-        }
-
-        for (SizeT i = 0; i < entities.Size(); i++)
+        /*for (SizeT i = 0; i < entities.Size(); i++)
         {
             Math::point pt = Math::point(Math::n_sin(this->frameIndex / 100.0f) * 5 + 2 * i, 0, Math::n_cos(this->frameIndex / 100.0f) * 5 + 2 * i);
             Math::matrix44 trf = Math::matrix44::translation(pt);
             Math::matrix44 rot = Math::matrix44::rotationy(Math::n_deg2rad(90) + this->frameIndex / 100.0f);
             const auto trf_c = Components::GetComponent<Components::TransformComponent>(entities[i]);
             Components::Transforms()->SetWorldTransform(trf_c, rot * trf);
-        }
+        }*/
 
         // force wait immediately
         WindowPresent(wnd, frameIndex);
@@ -539,9 +549,9 @@ void ExampleApplication::MakeBoy()
     Components::Characters()->SetSkeletonUri(cha, "ske:Units/Unit_Footman.nsk3");
     Components::Characters()->SetAnimationUri(cha, "ani:Units/Unit_Footman.nax3");
     Components::Characters()->SetTag(cha, "Examples");
-    const auto animId = Components::Characters()->Setup(cha);
+    Components::Characters()->Setup(cha);
+	Components::Characters()->Play(cha, 0, 0);
 
-    Characters::CharacterContext::PlayClip(animId, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
     this->entities.Append(ent);
 }
 

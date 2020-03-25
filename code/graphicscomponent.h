@@ -20,12 +20,15 @@ namespace Components
 
 		void AppendDefault() override;		
 		void EraseInstance(InstanceId instance) override;
+		Util::Variant::Type GetTypeByName(Util::String data);
+		bool SetDataByName(InstanceId instance, Util::String data, Util::Variant value);
 		
+		void OnLoad(InstanceId instance) override;
 		void OnDeactivate(InstanceId instance) override;
 		void OnBeginFrame() override;
 
-		[[nodiscard]] Util::String GetResourceUri(const InstanceId idx) const { return _data.uri[idx]; }
-		void SetResourceUri(const InstanceId idx, const Util::String& uri) { _data.uri[idx] = uri; }
+		[[nodiscard]] Util::String GetResourceUri(const InstanceId idx) const { return _data.res_uri[idx]; }
+		void SetResourceUri(const InstanceId idx, const Util::String& uri) { _data.res_uri[idx] = uri; }
 
 		[[nodiscard]] Util::StringAtom GetTag(const InstanceId idx) const { return _data.tag[idx]; }
 		void SetTag(const InstanceId idx, const Util::StringAtom tag) { _data.tag[idx] = tag; }
@@ -36,9 +39,9 @@ namespace Components
 		[[nodiscard]] Graphics::GraphicsEntityId GetRenderId(const InstanceId idx) const { return _data.gfx_id[idx]; }
 
 	private:
-		struct GraphicsData
+		struct
 		{
-			Util::Array<Util::String> uri;
+			Util::Array<Util::String> res_uri;
 			Util::Array<Util::StringAtom> tag;
 			Util::Array<Graphics::GraphicsEntityId> gfx_id;
 			Util::Array<Visibility::VisibilityEntityType> visibility_type;

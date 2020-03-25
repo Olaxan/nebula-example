@@ -18,14 +18,16 @@ namespace Components
 
 		void AppendDefault() override;
 		void EraseInstance(InstanceId instance) override;
+		Util::Variant::Type GetTypeByName(Util::String data);
+		bool SetDataByName(InstanceId instance, Util::String name, Util::Variant value);
 		
-		[[nodiscard]] Math::matrix44 GetWorldTransform(InstanceId idx) const { return _data.transforms[idx]; }
-		void SetWorldTransform(InstanceId idx, Math::matrix44 transform) { _data.transforms[idx] = transform; }
+		[[nodiscard]] Math::matrix44 GetWorldTransform(InstanceId idx) const { return _data.transform[idx]; }
+		void SetWorldTransform(InstanceId idx, Math::matrix44 transform) { _data.transform[idx] = transform; }
 		
 	private:
-		struct TransformData
+		struct
 		{
-			Util::Array<Math::matrix44> transforms;
+			Util::Array<Math::matrix44> transform;
 		} _data;
 	};
 
