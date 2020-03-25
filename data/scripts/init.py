@@ -11,7 +11,7 @@ for i in range(5):
 	e.register_component("Graphics")
 	e.register_component("Character")
 
-	trf.set_world_transform(e, nm.Matrix44.translation(nm.Point(i * 2, 0, i * 2)))
+	trf.set_world_transform(e, nm.Matrix44.translation(nm.Point(i * -2, 0, i * -2)))
 	
 	gfx.set_resource_uri(e, "mdl:Units/Unit_Footman.n3")
 	gfx.set_tag(e, "Examples")

@@ -288,7 +288,7 @@ ExampleApplication::Run()
     Lighting::LightContext::RegisterEntity(pointLight);
     Lighting::LightContext::SetupPointLight(pointLight, Math::float4(4.5, 0.5, 0.2, 1), 10.0f, Math::matrix44::translation(1, 2, 1), 100.0f, true);
 
-	//this->pyServer->EvalFile("scr:init.py");
+	this->pyServer->EvalFile("scr:init.py");
 	this->entMgr->Load("proj:data/scenes/example.json");
 	
     while (run && !inputServer->IsQuitRequested())

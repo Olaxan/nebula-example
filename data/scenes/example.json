@@ -15,5 +15,22 @@
 		"tag": "Examples"
       }
     }
+  },
+  "King": {
+    "components": {
+      "Transform": {
+        "transform": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 10.0, 0.0, 10.0, 1.0]
+      },
+      "Graphics": {
+        "res_uri": "mdl:Units/unit_king.n3",
+		"tag": "Examples",
+		"visibility_type": 0
+      },
+      "Character": {
+        "skel_uri": "ske:Units/unit_king.nsk3",
+		"anim_uri": "ani:Units/unit_king.nax3",
+		"tag": "Examples"
+      }
+    }
   }
 }
