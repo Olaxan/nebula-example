@@ -23,5 +23,3 @@ for i in range(5):
 	char.set_tag(e, "Examples")
 	char.setup(e)
 	char.play(e, 0, 0)
-	
-print(trf.get_world_transform(e))
